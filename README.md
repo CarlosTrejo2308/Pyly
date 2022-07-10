@@ -40,4 +40,5 @@ The analytics/ endpoint will return you all the information regarding that alias
     If the collision happens when Pyly creates the alias, then Pyly will first verify if that hash points to the URL in the database and return that one; if not, then it will hash that hash recursively until it finds a unique one or points to the URL.
 
 3. What happens when the TTL is reached?
+
     Pyly will still save the alias and all the analytics. But when a user tries to access it, Pyly will return an error of expired.
