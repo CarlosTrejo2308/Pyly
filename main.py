@@ -1,6 +1,7 @@
 from flask import Flask, redirect, request
 from flask_restful import Resource, Api, reqparse
 from dbManager import SQDBManager
+from hashlib import sha256
 # Simport pandas as pd
 # import ast
 
@@ -33,7 +34,7 @@ class Create(Resource):
                         "alias": alias}, 400
             else:
                 # hash the url and use the first 6 chars as alias
-                alias = str(hash(request.headers['url']))[:6]
+                alias = sha256(request.headers['url'].encode('utf-8')).hexdigest()[:6]
 
         if 'ttl' in request.headers:
             ttl = request.headers['ttl']
