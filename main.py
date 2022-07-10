@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, redirect, request
 from flask_restful import Resource, Api, reqparse
 from dbManager import SQDBManager
 # Simport pandas as pd
@@ -43,10 +43,18 @@ class Create(Resource):
         return {"alias": alias}, 201
 
 class Redirect(Resource):
-    pass
+    def get(self, alias):
+        # get the url from the database
+        url = db.get(alias)
+        if url is None:
+            return {"error": "Alias does not exist"}, 404
+        url = "http://" + url[1]
+
+        # redirect to the url
+        return redirect(url, code=302)
 
 api.add_resource(Create, '/create')  # '/create' is our entry point
-api.add_resource(Redirect, '/r')  # '/create' is our entry point
+api.add_resource(Redirect, '/r/<alias>')  # '/create' is our entry point
 
 
 if __name__ == '__main__':
